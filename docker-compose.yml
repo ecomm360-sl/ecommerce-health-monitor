@@ -19,6 +19,7 @@ services:
     volumes:
       - ./data:/app/data
     restart: unless-stopped
+    command: node .next/standalone/server.js
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000"]
       interval: 30s
