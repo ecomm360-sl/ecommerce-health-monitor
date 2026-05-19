@@ -2,6 +2,8 @@ FROM node:20-slim
 
 WORKDIR /app
 
+ENV PORT=3000
+
 RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
@@ -11,6 +13,8 @@ COPY prisma ./prisma
 RUN npx prisma generate
 
 COPY . .
+
+RUN npx prisma db push --accept-data-loss
 
 RUN npm run build
 
