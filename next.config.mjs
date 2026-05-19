@@ -3,9 +3,6 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['cheerio'],
   },
-  async rewrites() {
-    return [];
-  },
 };
 
 export default nextConfig;
