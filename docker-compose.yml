@@ -7,25 +7,24 @@ services:
       dockerfile: Dockerfile.prod
     container_name: ecommerce-health-monitor
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=80
       - DATABASE_URL=file:/app/data/dev.db
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
       - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
-      - UPTIME_CRON=*/30 * * * *
-      - WPO_CRON=0 */2 * * *
-      - SEO_CRON=0 */4 * * *
     volumes:
-      - ./data:/app/data
+      - ecommerce-data:/app/data
     restart: unless-stopped
-    command: node .next/standalone/server.js
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/"]
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
       interval: 30s
       timeout: 10s
       retries: 3
+
+volumes:
+  ecommerce-data:
 
 networks:
   default:
