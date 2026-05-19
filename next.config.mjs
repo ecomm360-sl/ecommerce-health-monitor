@@ -1,5 +1,4 @@
 const nextConfig = {
-  output: 'standalone',
   experimental: {
     serverComponentsExternalPackages: ['cheerio'],
   },

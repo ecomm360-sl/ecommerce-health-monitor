@@ -24,23 +24,28 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, domain, platform, apiKey, apiSecret, tenantId } = body;
+    const { name, domain, platform, apiKey, apiSecret } = body;
+
+    if (!name || !domain || !platform) {
+      return NextResponse.json({ error: 'name, domain and platform are required' }, { status: 400 });
+    }
 
     const store = await prisma.store.create({
       data: {
-        tenantId: tenantId || 1,
+        tenantId: 1,
         name,
         domain,
         platform,
         url: `https://${domain}`,
-        apiKey,
-        apiSecret,
+        apiKey: apiKey || null,
+        apiSecret: apiSecret || null,
         active: 1,
       },
     });
 
     return NextResponse.json(store, { status: 201 });
   } catch (error) {
+    console.error('Error creating store:', error);
     return NextResponse.json({ error: 'Failed to create store' }, { status: 500 });
   }
 }
