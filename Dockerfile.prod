@@ -1,14 +1,13 @@
-FROM node:20-alpine
+FROM node:20-slim
 
 WORKDIR /app
 
-RUN apk add --no-cache python3 make g++ libssl3
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++
 
 COPY package*.json ./
 RUN npm install --production
 
 COPY prisma ./prisma
-
 RUN npx prisma generate
 
 COPY . .
