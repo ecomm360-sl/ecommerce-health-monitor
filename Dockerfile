@@ -12,8 +12,6 @@ RUN npx prisma generate
 
 COPY . .
 
-RUN npx prisma db push --accept-data-loss
-
 RUN npm run build
 
 EXPOSE 3000
