@@ -3,15 +3,8 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['cheerio'],
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
+  async rewrites() {
+    return [];
   },
 };
 
