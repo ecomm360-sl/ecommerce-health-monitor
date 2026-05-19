@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anomalyco/opencode/main/packages/config/schema.json",
+  "name": "ecommerce-health-monitor",
+  "version": "1.0.0",
+  "repository": "https://github.com/ibosch-ecomm/ecommerce-health-monitor",
+  "description": "Multi-tenant health monitor for ecommerce platforms",
+  "agents": [
+    {
+      "name": "seo-agent",
+      "description": "SEO health checks: sitemap, meta tags, schema.org, canonical, robots.txt",
+      "enabled": true
+    },
+    {
+      "name": "wpo-agent",
+      "description": "Performance checks: PageSpeed, Core Web Vitals (LCP, INP, CLS)",
+      "enabled": true
+    },
+    {
+      "name": "uptime-agent",
+      "description": "Uptime checks: HTTP status, response time, SSL certificate",
+      "enabled": true
+    }
+  ],
+  "platforms": ["shopify", "prestashop", "woocommerce", "wordpress", "logicommerce"],
+  "notifications": {
+    "primary": "telegram",
+    "backup": "email"
+  }
+}
