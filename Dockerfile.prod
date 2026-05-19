@@ -5,12 +5,14 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
-RUN npm install --production
+RUN npm install
 
 COPY prisma ./prisma
 RUN npx prisma generate
 
 COPY . .
+
+RUN npx prisma db push --accept-data-loss
 
 RUN npm run build
 

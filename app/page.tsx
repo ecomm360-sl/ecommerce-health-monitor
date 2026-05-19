@@ -16,18 +16,23 @@ interface StoreWithChecks {
   }[];
 }
 
-async function getStores(): Promise<StoreWithChecks[]> {
-  const stores = await prisma.store.findMany({
-    where: { active: 1 },
-    include: {
-      checks: {
-        orderBy: { checkedAt: 'desc' },
-        take: 3,
-      },
-    },
-  });
+export const dynamic = 'force-dynamic';
 
-  return stores as unknown as StoreWithChecks[];
+async function getStores(): Promise<StoreWithChecks[]> {
+  try {
+    const stores = await prisma.store.findMany({
+      where: { active: 1 },
+      include: {
+        checks: {
+          orderBy: { checkedAt: 'desc' },
+          take: 3,
+        },
+      },
+    });
+    return stores as unknown as StoreWithChecks[];
+  } catch {
+    return [];
+  }
 }
 
 export default async function HomePage() {
