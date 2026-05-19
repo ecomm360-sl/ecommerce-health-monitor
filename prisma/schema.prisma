@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Tenant {
+  id             Int      @id @default(autoincrement())
+  slug           String   @unique
+  name           String
+  email          String   @unique
+  plan           String   @default("basic")
+  telegramBotToken String?
+  telegramChatId   String?
+  emailAlerts      String?
+  active          Int      @default(1)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  stores         Store[]
+  users          User[]
+  alerts         Alert[]
+}
+
+model Store {
+  id             Int      @id @default(autoincrement())
+  tenantId       Int
+  name           String
+  platform       String
+  domain         String
+  url            String
+  apiKey         String?
+  apiSecret      String?
+  config         String?
+  active         Int      @default(1)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  tenant         Tenant      @relation(fields: [tenantId], references: [id])
+  checks         HealthCheck[]
+  alerts         Alert[]
+}
+
+model HealthCheck {
+  id             Int      @id @default(autoincrement())
+  storeId        Int
+  agent          String
+  status         String
+  score          Int?
+  findings       String?
+  checkedAt      DateTime @default(now())
+
+  store          Store     @relation(fields: [storeId], references: [id])
+}
+
+model Alert {
+  id             Int      @id @default(autoincrement())
+  tenantId       Int
+  storeId        Int
+  agent          String
+  severity       String
+  message        String
+  sentVia        String
+  createdAt      DateTime @default(now())
+
+  tenant         Tenant     @relation(fields: [tenantId], references: [id])
+  store          Store      @relation(fields: [storeId], references: [id])
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  tenantId       Int?
+  email          String   @unique
+  passwordHash   String
+  role           String
+  createdAt      DateTime @default(now())
+
+  tenant         Tenant?   @relation(fields: [tenantId], references: [id])
+}
