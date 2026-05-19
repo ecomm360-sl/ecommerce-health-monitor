@@ -23,9 +23,7 @@ export default function RootLayout({
                 </h1>
               </div>
               <div className="flex items-center space-x-4">
-                <a href="/stores" className="text-gray-600 hover:text-gray-900">Stores</a>
-                <a href="/alerts" className="text-gray-600 hover:text-gray-900">Alerts</a>
-                <a href="/settings" className="text-gray-600 hover:text-gray-900">Settings</a>
+                <span className="text-sm text-gray-500">Dashboard</span>
               </div>
             </div>
           </div>
